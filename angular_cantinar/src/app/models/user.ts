@@ -1,6 +1,6 @@
 export type Role = 'admin' | 'user';
 
-export interface User {
+export interface IUser {
     id: number;
     name: string;
     email: string;
@@ -8,7 +8,7 @@ export interface User {
     role: Role;
 }
 
-export class User implements User {
+export class User implements IUser {
     id: number;
     name: string;
     email: string;
