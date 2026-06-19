@@ -12,8 +12,7 @@ class Reserva extends Model
 
     protected $fillable = [
         'user_id',
-        'horario_id',
-        'fecha',
+        'fecha_hora',
         'estado',
     ];
 
@@ -23,9 +22,10 @@ class Reserva extends Model
     }
 
     public function productos()
-    {
-        return $this->belongsToMany(Producto::class, 'reserva_producto', 'reserva_id', 'producto_id')
-                    ->withPivot('cantidad')
-                    ->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Producto::class, 'reserva_producto', 'reserva_id', 'producto_id')
+                ->using(ReservaProducto::class)
+                ->withPivot('cantidad')
+                ->withTimestamps();
+}
 }

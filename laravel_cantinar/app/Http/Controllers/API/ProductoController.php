@@ -3,63 +3,75 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * GET /api/productos
+     * Listar todos los productos disponibles
      */
     public function index()
     {
-        //
+        return response()->json(Producto::all());
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * POST /api/productos
+     * Crear un producto nuevo (solo admin)
      */
     public function store(Request $request)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric|min:0',
+            'disponible' => 'boolean',
+        ]);
+
+        $producto = Producto::create($datos);
+
+        return response()->json($producto, 201);
     }
 
     /**
-     * Display the specified resource.
+     * GET /api/productos/{id}
+     * Ver un producto concreto
      */
-    public function show(string $id)
+    public function show(Producto $producto)
     {
-        //
+        return response()->json($producto);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * PUT/PATCH /api/productos/{id}
+     * Actualizar un producto (solo admin)
      */
-    public function edit(string $id)
+    public function update(Request $request, Producto $producto)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => 'sometimes|string|max:255',
+            'descripcion' => 'sometimes|string',
+            'precio' => 'sometimes|numeric|min:0',
+            'disponible' => 'sometimes|boolean',
+        ]);
+
+        //no importa el warning, es el intelephense
+        $producto->update($datos);
+
+        return response()->json($producto);
     }
 
     /**
-     * Update the specified resource in storage.
+     * DELETE /api/productos/{id}
+     * Borrar un producto (solo admin)
      */
-    public function update(Request $request, string $id)
+    public function destroy(Producto $producto)
     {
-        //
-    }
+        //no importa el error, es el intelephense
+        $producto->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(['mensaje' => 'Producto eliminado']);
     }
 }

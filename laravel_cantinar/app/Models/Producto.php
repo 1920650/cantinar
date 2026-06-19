@@ -14,16 +14,14 @@ class Producto extends Model
         'nombre',
         'descripcion',
         'precio',
-        'stock',
+        'disponible',
     ];
 
     public function reservas()
     {
         return $this->belongsToMany(Reserva::class, 'reserva_producto', 'producto_id', 'reserva_id')
+                    ->using(ReservaProducto::class)
                     ->withPivot('cantidad')
                     ->withTimestamps();
     }
-
-
-
 }

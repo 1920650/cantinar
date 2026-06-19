@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Reserva;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class ReservaFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->randomElement([1, 2, 3]),
+            'user_id' => User::factory(),
             'fecha_hora' => $this->faker->dateTime(),
             'estado' => $this->faker->randomElement(['pendiente', 'confirmada', 'cancelada']),
         ];

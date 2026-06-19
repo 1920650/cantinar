@@ -3,13 +3,13 @@
 namespace Database\Factories;
 
 
-use App\Models\Reserva_producto;
+use App\Models\ReservaProducto;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Reserva_producto>
+ * @extends Factory<ReservaProducto>
  */
-class Reserva_productoFactory extends Factory
+class ReservaProductoFactory extends Factory
 {
     /**
      * Define the model's default state.
