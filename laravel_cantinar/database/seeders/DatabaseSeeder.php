@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
 
-        Producto::factory(10)->create();
+        Producto::factory(20)->create();
 
         // Reservas, y a cada una le metemos productos aleatorios
         Reserva::factory(10)->create()->each(function ($reserva) {

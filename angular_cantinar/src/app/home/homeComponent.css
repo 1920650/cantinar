@@ -1,0 +1,21 @@
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.btn-link {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background: #7A8450;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-link:hover {
+  background: #5e6840;
+}

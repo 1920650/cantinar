@@ -7,19 +7,13 @@ import { IUser } from '../models/user';
 })
 export class UsersService {
 
-  http = inject(HttpClient);
-  
-  getusers() {
-    return this.http.get('http://localhost:8000/api/users');
-  }
-  adduser(user : IUser) {
-    return this.http.post('http://localhost:8000/api/users', user);
-  }
-  updateuser(user: IUser) {
-    return this.http.put(`http://localhost:8000/api/users/${user.id}`, user);
-  }
-  deleteuser(id: number) {
-    return this.http.delete(`http://localhost:8000/api/users/${id}`);
-  }
+  private http = inject(HttpClient);
 
+  /**
+   * GET /api/user
+   * Devuelve los datos del usuario actualmente logueado
+   */
+  getUsuarioActual() {
+    return this.http.get<IUser>('http://localhost:8000/api/user');
+  }
 }

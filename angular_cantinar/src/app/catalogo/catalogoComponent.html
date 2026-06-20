@@ -1,0 +1,55 @@
+<div class="catalogo-container">
+
+  <header class="catalogo-header">
+    <h1>Nuestro menú 🥪</h1>
+    <p>Elige lo que quieres y recógelo a la hora que prefieras.</p>
+
+    <nav class="nav-links">
+      <a routerLink="/home">← Volver al inicio</a>
+      <a routerLink="/carrito">Ir al carrito 🛒</a>
+    </nav>
+  </header>
+
+  @if (cargando) {
+    <p class="estado">Cargando productos...</p>
+  } @else if (error) {
+    <p class="estado error">{{ error }}</p>
+  } @else if (productos.length === 0) {
+    <p class="estado">No hay productos disponibles.</p>
+  } @else {
+
+    <div class="grid-productos">
+      @for (producto of productos; track producto.id) {
+        <article class="card-producto" [class.agotado]="!producto.disponible">
+
+          <header class="card-header">
+            <h3>{{ producto.nombre }}</h3>
+            @if (producto.disponible) {
+              <span class="badge disponible">Disponible</span>
+            } @else {
+              <span class="badge agotado-badge">Agotado</span>
+            }
+          </header>
+
+          <p class="descripcion">{{ producto.descripcion }}</p>
+
+          <div class="card-footer">
+            <span class="precio">{{ producto.precio }} €</span>
+
+            @if (producto.disponible) {
+              <div class="controles">
+                <button (click)="disminuir(producto.id)" class="btn-cant">−</button>
+                <span class="cantidad">{{ cantidades[producto.id] }}</span>
+                <button (click)="aumentar(producto.id)" class="btn-cant">+</button>
+                <button (click)="anadirAlCarrito(producto)" class="btn-anadir">Añadir</button>
+              </div>
+            }
+          </div>
+
+        </article>
+      }
+    </div>
+
+  }
+
+</div>

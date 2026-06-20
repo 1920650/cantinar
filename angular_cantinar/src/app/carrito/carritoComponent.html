@@ -1,0 +1,74 @@
+<div class="carrito-container">
+
+  <header class="carrito-header">
+    <h1>Tu carrito 🛒</h1>
+    <nav class="nav-links">
+      <a routerLink="/catalogo">← Seguir comprando</a>
+    </nav>
+  </header>
+
+  @if (items.length === 0) {
+    <div class="carrito-vacio">
+      <p>Tu carrito está vacío.</p>
+      <a routerLink="/catalogo" class="btn-link">Ver catálogo</a>
+    </div>
+  } @else {
+
+    <div class="lista-items">
+      @for (item of items; track item.producto.id) {
+        <article class="item-carrito">
+          <div class="item-info">
+            <h3>{{ item.producto.nombre }}</h3>
+            <p class="precio-unidad">{{ item.producto.precio }} € / unidad</p>
+          </div>
+
+          <div class="item-controles">
+            <button (click)="disminuir(item)" class="btn-cant">−</button>
+            <span class="cantidad">{{ item.cantidad }}</span>
+            <button (click)="aumentar(item)" class="btn-cant">+</button>
+          </div>
+
+          <div class="item-subtotal">
+            <strong>{{ (item.producto.precio * item.cantidad).toFixed(2) }} €</strong>
+            <button (click)="eliminar(item)" class="btn-eliminar">✕</button>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="total-row">
+      <span>Total:</span>
+      <strong class="total">{{ total.toFixed(2) }} €</strong>
+    </div>
+
+    <form [formGroup]="reservaForm" (ngSubmit)="confirmarReserva()" class="formulario-reserva">
+      <h2>¿Cuándo lo recoges?</h2>
+
+      <div class="form-group">
+        <label for="fecha_hora">Fecha y hora de recogida</label>
+        <input
+          id="fecha_hora"
+          type="datetime-local"
+          formControlName="fecha_hora"
+          [min]="minFechaHora"
+        />
+        @if (reservaForm.get('fecha_hora')?.invalid && reservaForm.get('fecha_hora')?.touched) {
+          <small class="error">Tienes que elegir fecha y hora.</small>
+        }
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-banner">{{ errorMessage }}</div>
+      }
+
+      <div class="acciones">
+        <button type="button" (click)="vaciar()" class="btn-secundario">Vaciar carrito</button>
+        <button type="submit" [disabled]="enviando" class="btn-principal">
+          {{ enviando ? 'Reservando...' : 'Confirmar reserva' }}
+        </button>
+      </div>
+    </form>
+
+  }
+
+</div>

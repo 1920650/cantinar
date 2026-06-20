@@ -1,27 +1,86 @@
 import { HttpClient } from "@angular/common/http";
-import { inject } from "@angular/core/primitives/di";
-import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { BehaviorSubject, tap } from "rxjs";
 import { IUser } from "../models/user";
-import { Injectable } from "@angular/core";
+
+interface AuthResponse {
+  user: IUser;
+  token: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    http = inject(HttpClient);
-    ususarioActual = new BehaviorSubject<IUser | null>(null);
+  private http = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
 
-    login(email: string, password: string) {
-        return this.http.post('http://localhost:8000/api/login', { email, password });
-    }
+  usuarioActual = new BehaviorSubject<IUser | null>(this.getUsuarioDeStorage());
 
-    register(name: string, email: string, password: string) {
-        return this.http.post('http://localhost:8000/api/register', { name, email, password });
+  login(email: string, password: string) {
+    return this.http.post<AuthResponse>('http://localhost:8000/api/login', { email, password })
+      .pipe(
+        tap(response => {
+          this.guardarSesion(response.user, response.token);
+        })
+      );
+  }
+
+  register(name: string, email: string, password: string, password_confirmation: string, telefono: string) {
+    return this.http.post<AuthResponse>('http://localhost:8000/api/register', {
+      name,
+      email,
+      password,
+      password_confirmation,
+      telefono,
+    }).pipe(
+      tap(response => {
+        this.guardarSesion(response.user, response.token);
+      })
+    );
+  }
+
+  logout() {
+    return this.http.post('http://localhost:8000/api/logout', {})
+      .pipe(
+        tap(() => {
+          this.limpiarSesion();
+        })
+      );
+  }
+
+  isLogedIn(): boolean {
+    return this.usuarioActual.value !== null;
+  }
+
+  isAdmin(): boolean {
+    return this.usuarioActual.value?.role === 'admin';
+  }
+
+  // ============== Métodos privados ==============
+
+  private guardarSesion(user: IUser, token: string) {
+    if (this.isBrowser) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
     }
-    logout(): void {
-        localStorage.removeItem('token');
-        this.ususarioActual.next(null);
+    this.usuarioActual.next(user);
+  }
+
+  private limpiarSesion() {
+    if (this.isBrowser) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
-    isLogedIn(): boolean {
-       return this.ususarioActual.value !== null;
+    this.usuarioActual.next(null);
+  }
+
+  private getUsuarioDeStorage(): IUser | null {
+    if (!this.isBrowser) {
+      return null;
     }
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
+  }
 }
