@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap');
+
+:host {
+  --cream: #FFF8EE;
+  --cream-deep: #F7EEDB;
+  --ink: #2B2420;
+  --ink-soft: #6B5F52;
+  --toast: #E8723A;
+  --toast-deep: #C95A28;
+  --olive: #7A8450;
+  --rose: #C94B4B;
+  --line: #E8D9C2;
+  --gold: #D4A537;
+}
+
+.reservas-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: 'Nunito Sans', sans-serif;
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+.reservas-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reservas-header h1 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2.2rem;
+  color: var(--ink);
+  margin: 0 0 0.5rem;
+}
+
+.reservas-header p {
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: var(--toast-deep);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.estado-msg {
+  text-align: center;
+  color: var(--ink-soft);
+  margin: 3rem 0;
+}
+
+.estado-msg.error {
+  color: var(--rose);
+  font-weight: 700;
+}
+
+.sin-reservas {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ink-soft);
+}
+
+.btn-link {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--toast);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-link:hover {
+  background: var(--toast-deep);
+}
+
+.lista-reservas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.card-reserva {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 1px 2px rgba(43, 36, 32, 0.04), 0 6px 18px -8px rgba(43, 36, 32, 0.12);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px dotted var(--line);
+}
+
+.reserva-id {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-header h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin: 0.2rem 0 0;
+}
+
+.estado {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.estado-pendiente {
+  background: #FFF3D8;
+  color: var(--gold);
+}
+
+.estado-confirmada {
+  background: #E8F0D8;
+  color: var(--olive);
+}
+
+.estado-cancelada {
+  background: #F0E0D8;
+  color: var(--rose);
+}
+
+.lista-productos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lista-productos li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.producto-nombre {
+  color: var(--ink);
+  text-transform: capitalize;
+}
+
+.producto-cantidad {
+  color: var(--ink-soft);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.producto-subtotal {
+  color: var(--toast-deep);
+  font-weight: 700;
+  min-width: 70px;
+  text-align: right;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+}
+
+.total-label {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.total {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.3rem;
+  color: var(--toast-deep);
+  flex: 1;
+}
+
+.btn-cancelar {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--rose);
+  border: 1.5px solid var(--rose);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-cancelar:hover {
+  background: var(--rose);
+  color: white;
+}

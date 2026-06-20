@@ -5,12 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ProductoController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * GET /api/productos
-     * Listar todos los productos disponibles
+     * Cualquiera puede listar
      */
     public function index()
     {
@@ -19,10 +22,12 @@ class ProductoController extends Controller
 
     /**
      * POST /api/productos
-     * Crear un producto nuevo (solo admin)
+     * Solo admin
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Producto::class);
+
         $datos = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
@@ -37,7 +42,7 @@ class ProductoController extends Controller
 
     /**
      * GET /api/productos/{id}
-     * Ver un producto concreto
+     * Cualquiera puede ver
      */
     public function show(Producto $producto)
     {
@@ -46,10 +51,12 @@ class ProductoController extends Controller
 
     /**
      * PUT/PATCH /api/productos/{id}
-     * Actualizar un producto (solo admin)
+     * Solo admin
      */
     public function update(Request $request, Producto $producto)
     {
+        $this->authorize('update', $producto);
+
         $datos = $request->validate([
             'nombre' => 'sometimes|string|max:255',
             'descripcion' => 'sometimes|string',
@@ -57,7 +64,6 @@ class ProductoController extends Controller
             'disponible' => 'sometimes|boolean',
         ]);
 
-        //no importa el warning, es el intelephense
         $producto->update($datos);
 
         return response()->json($producto);
@@ -65,11 +71,12 @@ class ProductoController extends Controller
 
     /**
      * DELETE /api/productos/{id}
-     * Borrar un producto (solo admin)
+     * Solo admin
      */
     public function destroy(Producto $producto)
     {
-        //no importa el error, es el intelephense
+        $this->authorize('delete', $producto);
+
         $producto->delete();
 
         return response()->json(['mensaje' => 'Producto eliminado']);

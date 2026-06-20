@@ -16,23 +16,19 @@ export class HomeComponent {
   private router = inject(Router);
 
   usuario: IUser | null = null;
+  esAdmin: boolean = false;
 
   constructor() {
-    // Suscribirse al estado del usuario
     this.authService.usuarioActual.subscribe(user => {
       this.usuario = user;
+      this.esAdmin = user?.role === 'admin';
     });
   }
 
   cerrarSesion() {
     this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        // Aunque falle el backend, el AuthService ya limpió localStorage
-        this.router.navigate(['/login']);
-      }
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login'])
     });
   }
 }

@@ -1,0 +1,109 @@
+<div class="admin-container">
+
+  <header class="admin-header">
+    <div>
+      <h1>Gestión de productos 🍔</h1>
+      <p>Crea, edita y borra los productos del catálogo.</p>
+    </div>
+    <nav class="nav-links">
+      <a routerLink="/home">← Volver al inicio</a>
+    </nav>
+  </header>
+
+  <div class="acciones-top">
+    @if (!mostrarFormulario) {
+      <button (click)="abrirFormularioNuevo()" class="btn-principal">+ Nuevo producto</button>
+    }
+  </div>
+
+  @if (mostrarFormulario) {
+    <section class="formulario">
+      <h2>{{ modoEdicion ? 'Editar producto' : 'Nuevo producto' }}</h2>
+
+      <form [formGroup]="productoForm" (ngSubmit)="guardar()">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre" />
+          @if (nombre?.invalid && nombre?.touched) {
+            <small class="error">El nombre es obligatorio.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" formControlName="descripcion" rows="3"></textarea>
+          @if (descripcion?.invalid && descripcion?.touched) {
+            <small class="error">La descripción es obligatoria.</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="precio">Precio (€)</label>
+            <input id="precio" type="number" step="0.01" min="0" formControlName="precio" />
+            @if (precio?.invalid && precio?.touched) {
+              <small class="error">Precio inválido.</small>
+            }
+          </div>
+
+          <div class="form-group form-checkbox">
+            <label>
+              <input type="checkbox" formControlName="disponible" />
+              Disponible
+            </label>
+          </div>
+        </div>
+
+        <div class="acciones-form">
+          <button type="button" (click)="cancelarFormulario()" class="btn-secundario">Cancelar</button>
+          <button type="submit" [disabled]="guardando" class="btn-principal">
+            {{ guardando ? 'Guardando...' : (modoEdicion ? 'Guardar cambios' : 'Crear producto') }}
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+
+  @if (cargando) {
+    <p class="estado-msg">Cargando productos...</p>
+  } @else if (error) {
+    <p class="estado-msg error">{{ error }}</p>
+  } @else if (productos.length === 0) {
+    <p class="estado-msg">No hay productos.</p>
+  } @else {
+    <table class="tabla-productos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (producto of productos; track producto.id) {
+          <tr [class.fila-agotado]="!producto.disponible">
+            <td>{{ producto.id }}</td>
+            <td class="capitalize">{{ producto.nombre }}</td>
+            <td class="descripcion-celda">{{ producto.descripcion }}</td>
+            <td><strong>{{ producto.precio }} €</strong></td>
+            <td>
+              @if (producto.disponible) {
+                <span class="badge disponible">Disponible</span>
+              } @else {
+                <span class="badge agotado">Agotado</span>
+              }
+            </td>
+            <td class="acciones-celda">
+              <button (click)="abrirFormularioEditar(producto)" class="btn-editar">Editar</button>
+              <button (click)="eliminar(producto)" class="btn-borrar">Borrar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+</div>

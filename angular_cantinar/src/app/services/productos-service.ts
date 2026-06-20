@@ -6,20 +6,21 @@ import { IProducto } from '../models/producto';
   providedIn: 'root',
 })
 export class ProductosService {
+  private http = inject(HttpClient);
 
-  http = inject(HttpClient);
-  
   getProductos() {
-    return this.http.get('http://localhost:8000/api/productos');
+    return this.http.get<IProducto[]>('http://localhost:8000/api/productos');
   }
-  addProducto(producto: IProducto) {
-    return this.http.post('http://localhost:8000/api/productos', producto);
+
+  addProducto(producto: Omit<IProducto, 'id'>) {
+    return this.http.post<IProducto>('http://localhost:8000/api/productos', producto);
   }
+
   updateProducto(producto: IProducto) {
-    return this.http.put(`http://localhost:8000/api/productos/${producto.id}`, producto);
+    return this.http.put<IProducto>(`http://localhost:8000/api/productos/${producto.id}`, producto);
   }
+
   deleteProducto(id: number) {
-    return this.http.delete(`http://localhost:8000/api/productos/${id}`);
+    return this.http.delete<{ mensaje: string }>(`http://localhost:8000/api/productos/${id}`);
   }
-  
 }

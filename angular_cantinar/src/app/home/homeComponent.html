@@ -8,6 +8,12 @@
 
     <div class="acciones">
       <a routerLink="/catalogo" class="btn-link">Ver catálogo</a>
+      <a routerLink="/mis-reservas" class="btn-link">Mis reservas</a>
+
+      @if (esAdmin) {
+        <a routerLink="/admin/productos" class="btn-link admin">Gestión de productos</a>
+      }
+
       <button (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
   } @else {

@@ -19,3 +19,11 @@
 .btn-link:hover {
   background: #5e6840;
 }
+
+.btn-link.admin {
+  background: #C95A28;
+}
+
+.btn-link.admin:hover {
+  background: #a4471f;
+}
