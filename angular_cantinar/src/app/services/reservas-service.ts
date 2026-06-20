@@ -6,20 +6,21 @@ import { IReserva } from '../models/reserva';
   providedIn: 'root',
 })
 export class ReservasService {
+  private http = inject(HttpClient);
 
-  http = inject(HttpClient);
-  
   getreservas() {
-    return this.http.get('http://localhost:8000/api/reservas');
+    return this.http.get<IReserva[]>('http://localhost:8000/api/reservas');
   }
-  addreserva(reserva: IReserva) {
-    return this.http.post('http://localhost:8000/api/reservas', reserva);
+
+  addreserva(reserva: any) {
+    return this.http.post<IReserva>('http://localhost:8000/api/reservas', reserva);
   }
-  updatereserva(reserva: IReserva) {
-    return this.http.put(`http://localhost:8000/api/reservas/${reserva.id}`, reserva);
+
+  cambiarEstado(id: number, estado: 'pendiente' | 'confirmada' | 'cancelada') {
+    return this.http.put<IReserva>(`http://localhost:8000/api/reservas/${id}`, { estado });
   }
+
   deletereserva(id: number) {
-    return this.http.delete(`http://localhost:8000/api/reservas/${id}`);
+    return this.http.delete<{ mensaje: string }>(`http://localhost:8000/api/reservas/${id}`);
   }
-  
 }

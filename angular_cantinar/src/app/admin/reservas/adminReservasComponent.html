@@ -1,0 +1,93 @@
+<div class="admin-container">
+
+  <header class="admin-header">
+    <div>
+      <h1>Gestión de reservas 📋</h1>
+      <p>Acepta, cancela y gestiona todas las reservas de la cantina.</p>
+    </div>
+    <nav class="nav-links">
+      <a routerLink="/home">← Volver al inicio</a>
+    </nav>
+  </header>
+
+  <!-- Filtros -->
+  <div class="filtros">
+    <button (click)="cambiarFiltro('todas')" [class.activo]="filtroActivo === 'todas'">
+      Todas <span class="contador">{{ contar('todas') }}</span>
+    </button>
+    <button (click)="cambiarFiltro('pendiente')" [class.activo]="filtroActivo === 'pendiente'">
+      Pendientes <span class="contador">{{ contar('pendiente') }}</span>
+    </button>
+    <button (click)="cambiarFiltro('confirmada')" [class.activo]="filtroActivo === 'confirmada'">
+      Confirmadas <span class="contador">{{ contar('confirmada') }}</span>
+    </button>
+    <button (click)="cambiarFiltro('cancelada')" [class.activo]="filtroActivo === 'cancelada'">
+      Canceladas <span class="contador">{{ contar('cancelada') }}</span>
+    </button>
+  </div>
+
+  @if (cargando) {
+    <p class="estado-msg">Cargando reservas...</p>
+  } @else if (error) {
+    <p class="estado-msg error">{{ error }}</p>
+  } @else if (reservasFiltradas.length === 0) {
+    <p class="estado-msg">No hay reservas en esta categoría.</p>
+  } @else {
+
+    <div class="lista-reservas">
+      @for (reserva of reservasFiltradas; track reserva.id) {
+        <article class="card-reserva">
+
+          <header class="card-header">
+            <div class="info-principal">
+              <span class="reserva-id">Reserva #{{ reserva.id }}</span>
+              <h3>{{ formatearFecha(reserva.fecha_hora) }}</h3>
+              @if (reserva.user) {
+                <p class="cliente">
+                  Cliente: <strong>{{ reserva.user.name }}</strong>
+                  ({{ reserva.user.email }})
+                </p>
+              }
+            </div>
+            <span class="estado estado-{{ reserva.estado }}">
+              {{ reserva.estado }}
+            </span>
+          </header>
+
+          @if (reserva.productos && reserva.productos.length > 0) {
+            <ul class="lista-productos">
+              @for (producto of reserva.productos; track producto.id) {
+                <li>
+                  <span class="producto-nombre">{{ producto.nombre }}</span>
+                  <span class="producto-cantidad">x {{ producto.pivot.cantidad }}</span>
+                  <span class="producto-subtotal">
+                    {{ (Number(producto.precio) * producto.pivot.cantidad).toFixed(2) }} €
+                  </span>
+                </li>
+              }
+            </ul>
+          }
+
+          <footer class="card-footer">
+            <div class="total-row">
+              <span class="total-label">Total:</span>
+              <strong class="total">{{ calcularTotal(reserva).toFixed(2) }} €</strong>
+            </div>
+
+            <div class="acciones">
+              @if (reserva.estado === 'pendiente') {
+                <button (click)="aceptar(reserva)" class="btn-aceptar">✓ Aceptar</button>
+                <button (click)="cancelar(reserva)" class="btn-cancelar">✕ Cancelar</button>
+              } @else if (reserva.estado === 'confirmada') {
+                <button (click)="cancelar(reserva)" class="btn-cancelar">✕ Cancelar</button>
+              }
+            </div>
+          </footer>
+
+        </article>
+      }
+    </div>
+
+  }
+
+</div>

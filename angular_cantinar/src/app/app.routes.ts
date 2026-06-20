@@ -6,6 +6,7 @@ import { CatalogoComponent } from './catalogo/catalogoComponent';
 import { CarritoComponent } from './carrito/carritoComponent';
 import { MisReservasComponent } from './mis-reservas/misReservasComponent';
 import { AdminProductosComponent } from './admin/productos/adminProductosComponent';
+import { AdminReservasComponent } from './admin/reservas/adminReserevasComponent';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
@@ -20,9 +21,9 @@ export const routes: Routes = [
   { path: 'carrito', component: CarritoComponent, canActivate: [authGuard] },
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard] },
 
-  // Requieren ser admin
+  // Requieren admin
   { path: 'admin/productos', component: AdminProductosComponent, canActivate: [adminGuard] },
-  // { path: 'admin/reservas', component: AdminReservasComponent, canActivate: [adminGuard] },
+  { path: 'admin/reservas', component: AdminReservasComponent, canActivate: [adminGuard] },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },

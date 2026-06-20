@@ -11,8 +11,9 @@
       <a routerLink="/mis-reservas" class="btn-link">Mis reservas</a>
 
       @if (esAdmin) {
-        <a routerLink="/admin/productos" class="btn-link admin">Gestión de productos</a>
-      }
+  <a routerLink="/admin/productos" class="btn-link admin">Gestión de productos</a>
+  <a routerLink="/admin/reservas" class="btn-link admin">Gestión de reservas</a>
+}
 
       <button (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
