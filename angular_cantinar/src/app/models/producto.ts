@@ -1,4 +1,4 @@
-export interface ProductoInterface {
+export interface IProducto {
     id: number;
     nombre: string;
     descripcion: string;
@@ -6,7 +6,7 @@ export interface ProductoInterface {
     disponible: boolean;
 }
 
-export class Producto {
+export class Producto implements IProducto {
 
 id : number;
 nombre : string;
