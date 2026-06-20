@@ -10,16 +10,16 @@ export class UsersService {
   http = inject(HttpClient);
   
   getusers() {
-    return this.http.get('http://localhost:8000/users');
+    return this.http.get('http://localhost:8000/api/users');
   }
   adduser(user : IUser) {
-    return this.http.post('http://localhost:8000/users', user);
+    return this.http.post('http://localhost:8000/api/users', user);
   }
   updateuser(user: IUser) {
-    return this.http.put(`http://localhost:8000/users/${user.id}`, user);
+    return this.http.put(`http://localhost:8000/api/users/${user.id}`, user);
   }
   deleteuser(id: number) {
-    return this.http.delete(`http://localhost:8000/users/${id}`);
+    return this.http.delete(`http://localhost:8000/api/users/${id}`);
   }
 
 }
