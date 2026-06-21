@@ -21,7 +21,10 @@ export class HomeComponent {
   constructor() {
     this.authService.usuarioActual.subscribe(user => {
       this.usuario = user;
-      this.esAdmin = user?.role === 'admin';
+      if (user?.role === 'admin') {
+        this.esAdmin = true;
+      }
+      
     });
   }
 

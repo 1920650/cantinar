@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReservasService } from '../services/reservas-service';
 import { IReserva } from '../models/reserva';
+import { UsersService } from '../services/users-service';
 
 @Component({
   selector: 'app-mis-reservas',
@@ -14,11 +15,13 @@ import { IReserva } from '../models/reserva';
 export class MisReservasComponent {
   private reservasService = inject(ReservasService);
   private cdr = inject(ChangeDetectorRef);
+  private userService = inject(UsersService); // Inyectar el servicio de usuario
 
   reservas: IReserva[] = [];
   cargando: boolean = true;
   error: string = '';
   Number = Number;
+  userName: string = ''; 
 
   constructor() {
     afterNextRender(() => {
@@ -73,7 +76,14 @@ export class MisReservasComponent {
       0
     );
   }
-
+  ngOnInit(){
+    this.userService.getUsuarioActual().subscribe({
+      next: (user) => {
+        this.userName = user.name; // Asignar el nombre del usuario
+        this.cdr.detectChanges();
+      }
+    });
+  }
   // Formatear fecha para mostrar
   formatearFecha(fecha: string): string {
     const d = new Date(fecha);

@@ -29,6 +29,7 @@
             <div>
               <span class="reserva-id">Reserva #{{ reserva.id }}</span>
               <h3>{{ formatearFecha(reserva.fecha_hora) }}</h3>
+              <h4>Nombre de la reserva {{userName}}</h4>
             </div>
             <span [class]="claseEstado(reserva.estado)">
               {{ reserva.estado }}

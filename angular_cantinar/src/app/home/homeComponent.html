@@ -1,23 +1,30 @@
 <div class="home-container">
   <h1>Bienvenido a Cantinar 🥪</h1>
 
-  @if (usuario) {
-    <p>Has iniciado sesión como <strong>{{ usuario.name }}</strong></p>
-    <p>Rol: <strong>{{ usuario.role }}</strong></p>
-    <p>Email: {{ usuario.email }}</p>
+ 
+    <p>Has iniciado sesión como <strong>{{ usuario?.name }}</strong></p>
+    <p>Rol: <strong>{{ usuario?.role }}</strong></p>
+    <p>Email: {{ usuario?.email }}</p>
 
+ @if (!esAdmin) {
     <div class="acciones">
       <a routerLink="/catalogo" class="btn-link">Ver catálogo</a>
       <a routerLink="/mis-reservas" class="btn-link">Mis reservas</a>
 
-      @if (esAdmin) {
-  <a routerLink="/admin/productos" class="btn-link admin">Gestión de productos</a>
-  <a routerLink="/admin/reservas" class="btn-link admin">Gestión de reservas</a>
-}
-
       <button (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
   } @else {
-    <p>No has iniciado sesión.</p>
+    @if (esAdmin) {
+      <div class="acciones">
+      <a routerLink="/catalogo" class="btn-link">Ver catálogo</a>
+      <a routerLink="/admin/productos" class="btn-link admin">Gestión de productos</a>
+      <a routerLink="/admin/reservas" class="btn-link admin">Gestión de reservas</a>
+
+      <button (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+      
+} @else {
+  <p>No has iniciado sesion</p>
+}
   }
 </div>
