@@ -3,6 +3,7 @@ import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
 import { BehaviorSubject, tap } from "rxjs";
 import { IUser } from "../models/user";
+import { environment } from "../../environments/environment";
 
 interface AuthResponse {
   user: IUser;
@@ -12,6 +13,7 @@ interface AuthResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+  private apiUrl = environment.apiUrl;
   private http = inject(HttpClient);
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
@@ -19,7 +21,7 @@ export class AuthService {
   usuarioActual = new BehaviorSubject<IUser | null>(this.getUsuarioDeStorage());
 
   login(email: string, password: string) {
-    return this.http.post<AuthResponse>('http://localhost:8000/api/login', { email, password })
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap(response => {
           this.guardarSesion(response.user, response.token);
@@ -28,7 +30,7 @@ export class AuthService {
   }
 
   register(name: string, email: string, password: string, password_confirmation: string, telefono: string) {
-    return this.http.post<AuthResponse>('http://localhost:8000/api/register', {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, {
       name,
       email,
       password,
@@ -42,7 +44,7 @@ export class AuthService {
   }
 
   logout() {
-    return this.http.post('http://localhost:8000/api/logout', {})
+    return this.http.post(`${this.apiUrl}/logout`, {})
       .pipe(
         tap(() => {
           this.limpiarSesion();

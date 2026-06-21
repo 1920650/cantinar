@@ -11,20 +11,14 @@ import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
-  // Públicas
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'catalogo', component: CatalogoComponent },
-
-  // Requieren login
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'carrito', component: CarritoComponent, canActivate: [authGuard] },
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard] },
-
-  // Requieren admin
   { path: 'admin/productos', component: AdminProductosComponent, canActivate: [adminGuard] },
   { path: 'admin/reservas', component: AdminReservasComponent, canActivate: [adminGuard] },
-
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
 ];

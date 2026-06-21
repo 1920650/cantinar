@@ -14,12 +14,10 @@ export class CarritoService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
 
-  // Estado del carrito (observable, los componentes se suscriben)
+  
   items = new BehaviorSubject<ItemCarrito[]>(this.cargarDeStorage());
 
-  /**
-   * Añadir producto al carrito (si ya está, suma cantidad)
-   */
+
   anadir(producto: IProducto, cantidad: number = 1) {
     const actuales = this.items.value;
     const existente = actuales.find(i => i.producto.id === producto.id);
@@ -34,9 +32,7 @@ export class CarritoService {
     this.guardarEnStorage();
   }
 
-  /**
-   * Cambiar cantidad de un producto del carrito
-   */
+  
   cambiarCantidad(productoId: number, cantidad: number) {
     if (cantidad < 1) {
       this.eliminar(productoId);
