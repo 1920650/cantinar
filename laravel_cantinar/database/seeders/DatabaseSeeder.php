@@ -14,13 +14,14 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // Usuarios random
         User::factory(10)->create();
 
-        Producto::factory(20)->create();
+        // Productos reales (en vez de la factoría con palabras random)
+        $this->call(ProductosSeeder::class);
 
-        // Reservas, y a cada una le metemos productos aleatorios
+        // Reservas con productos aleatorios del catálogo real
         Reserva::factory(10)->create()->each(function ($reserva) {
-            // Cogemos entre 1 y 4 productos al azar
             $productos = Producto::inRandomOrder('')->take(rand(1, 4))->get();
 
             foreach ($productos as $producto) {
